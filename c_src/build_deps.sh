@@ -8,10 +8,6 @@ if [ `uname -s` = 'SunOS' -a "${POSIX_SHELL}" != "true" ]; then
 fi
 unset POSIX_SHELL # clear it so if we invoke other scripts, they run as ksh as well
 
-LEVELDB_VSN="develop"
-
-SNAPPY_VSN="1.0.4"
-
 set -e
 
 if [ `basename $PWD` != "c_src" ]; then
@@ -21,6 +17,7 @@ if [ `basename $PWD` != "c_src" ]; then
 fi
 
 BASEDIR="$PWD"
+SUPERSONIC_VSN="0.9.4"
 
 # detecting gmake and if exists use it
 # if not use make
@@ -36,10 +33,7 @@ case "$1" in
         ;;
 
     clean)
-        rm -rf system snappy-$SNAPPY_VSN
-        if [ -d leveldb ]; then
-            (cd leveldb && $MAKE clean)
-        fi
+        rm -rf supersonic
         ;;
 
     test)
@@ -47,30 +41,19 @@ case "$1" in
         export CXXFLAGS="$CXXFLAGS -I $BASEDIR/system/include"
         export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
         export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
-
-        (cd leveldb && $MAKE check)
-
         ;;
 
     *)
-        if [ ! -d snappy-$SNAPPY_VSN ]; then
-            tar -xzf snappy-$SNAPPY_VSN.tar.gz
-            (cd snappy-$SNAPPY_VSN && ./configure --prefix=$BASEDIR/system --libdir=$BASEDIR/system/lib --with-pic)
+        if [ ! -d supersonic-$SUPERSONIC_VSN ]; then
+            tar -xzf supersonic-$SUPERSONIC_VSN.tar.gz
         fi
 
-        (cd snappy-$SNAPPY_VSN && $MAKE && $MAKE install)
+        if [ ! -f supersonic-$SUPERSONIC_VSN/.libs/libsupersonic.a ]; then
+            (cd supersonic-$SUPERSONIC_VSN && ./install_supersonic.sh `pwd`)
+        fi
 
-        export CFLAGS="$CFLAGS -I $BASEDIR/system/include"
-        export CXXFLAGS="$CXXFLAGS -I $BASEDIR/system/include"
         export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
         export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
-
-        if [ ! -d leveldb ]; then
-            git clone git://github.com/basho/leveldb
-            (cd leveldb && git checkout $LEVELDB_VSN)
-        fi
-
-        (cd leveldb && $MAKE all)
 
         ;;
 esac

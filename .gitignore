@@ -1,2 +1,8 @@
 *~
 ebin/*.beam
+ebin/*.app
+.rebar
+deps
+priv/*.so
+*.o
+.eunit
