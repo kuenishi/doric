@@ -6,3 +6,4 @@ deps
 priv/*.so
 *.o
 .eunit
+c_src/supersonic-0.9.4

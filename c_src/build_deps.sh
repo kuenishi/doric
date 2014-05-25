@@ -39,8 +39,11 @@ case "$1" in
     test)
         export CFLAGS="$CFLAGS -I $BASEDIR/system/include"
         export CXXFLAGS="$CXXFLAGS -I $BASEDIR/system/include"
-        export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
-        export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
+        #export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
+        #export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
+
+        export LDFLAGS="$LDFLAGS -L$BASEDIR/supersonic-0.9.4/.libs"
+        export LD_LIBRARY_PATH="$BASEDIR/supersonic-0.9.4/.libs"
         ;;
 
     *)
@@ -51,9 +54,11 @@ case "$1" in
         if [ ! -f supersonic-$SUPERSONIC_VSN/.libs/libsupersonic.a ]; then
             (cd supersonic-$SUPERSONIC_VSN && ./install_supersonic.sh `pwd`)
         fi
+        #export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
+        #export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
+        export LDFLAGS="$LDFLAGS -L$BASEDIR/supersonic-0.9.4/.libs"
+        export LD_LIBRARY_PATH="$BASEDIR/supersonic-0.9.4/.libs"
 
-        export LDFLAGS="$LDFLAGS -L$BASEDIR/system/lib"
-        export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
-
+        echo $LD_LIBRARY_PATH
         ;;
 esac

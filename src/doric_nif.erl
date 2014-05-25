@@ -6,7 +6,9 @@
 -module(doric_nif).
 -on_load(init/0).
 
--export([run/0]).
+-export([run/0,
+         new_table/2, drop_table/1,
+         add_row/2, min/2, max/2]).
 
 -spec init() -> ok | {error, any()}.
 init() ->
@@ -25,3 +27,18 @@ init() ->
 
 run() ->
     throw(notyet).
+
+new_table(TableName, Schema) ->
+    notyet.
+
+drop_table(TableName) ->
+    notyet.
+
+add_row(TableName, Row) ->
+    notyet.
+
+min(TableName, Column) ->
+    notyet.
+
+max(TableName, Column) ->
+    notyet.
